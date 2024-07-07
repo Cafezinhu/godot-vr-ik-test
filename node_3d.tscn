@@ -1,4 +1,4 @@
-[gd_scene load_steps=78 format=3 uid="uid://df78fmiwsuc8p"]
+[gd_scene load_steps=79 format=3 uid="uid://df78fmiwsuc8p"]
 
 [ext_resource type="PackedScene" uid="uid://6p02uudj3t14" path="res://models/6493143135142452442.vrm" id="1_gtsjq"]
 [ext_resource type="Script" path="res://addons/vrm/vrm_spring_bone.gd" id="2_8ml5m"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" path="res://addons/vrm/vrm_collider_group.gd" id="4_2hm0d"]
 [ext_resource type="PackedScene" path="res://addons/godot-xr-tools/misc/vr_common_shader_cache.tscn" id="5_u2yjh"]
 [ext_resource type="Script" path="res://scripts/turn_ik_on.gd" id="5_x0emc"]
+[ext_resource type="Script" path="res://scripts/avatar_on_xr.gd" id="6_f31nk"]
 [ext_resource type="PackedScene" uid="uid://bl2nuu3qhlb5k" path="res://addons/godot-xr-tools/functions/movement_direct.tscn" id="6_rkmmf"]
 [ext_resource type="PackedScene" uid="uid://b6bk2pj8vbj28" path="res://addons/godot-xr-tools/functions/movement_turn.tscn" id="7_gccbq"]
 [ext_resource type="PackedScene" uid="uid://diyu06cw06syv" path="res://addons/godot-xr-tools/player/player_body.tscn" id="8_5g6bf"]
@@ -837,7 +838,9 @@ environment = SubResource("Environment_fugdg")
 
 [node name="XROrigin3D" type="XROrigin3D" parent="."]
 
-[node name="XRCamera3D" type="XRCamera3D" parent="XROrigin3D"]
+[node name="XRCamera3D" type="XRCamera3D" parent="XROrigin3D" node_paths=PackedStringArray("avatar")]
+script = ExtResource("6_f31nk")
+avatar = NodePath("../../6493143135142452442")
 
 [node name="VRCommonShaderCache" parent="XROrigin3D/XRCamera3D" instance=ExtResource("5_u2yjh")]
 
