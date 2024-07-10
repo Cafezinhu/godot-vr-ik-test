@@ -1,4 +1,4 @@
-[gd_scene load_steps=88 format=3 uid="uid://df78fmiwsuc8p"]
+[gd_scene load_steps=87 format=3 uid="uid://df78fmiwsuc8p"]
 
 [ext_resource type="PackedScene" uid="uid://6p02uudj3t14" path="res://models/6493143135142452442.vrm" id="1_gtsjq"]
 [ext_resource type="Script" path="res://addons/vrm/vrm_spring_bone.gd" id="2_8ml5m"]
@@ -12,7 +12,7 @@
 [ext_resource type="PackedScene" uid="uid://diyu06cw06syv" path="res://addons/godot-xr-tools/player/player_body.tscn" id="8_5g6bf"]
 [ext_resource type="PackedScene" uid="uid://clc5dre31iskm" path="res://addons/godot-xr-tools/xr/start_xr.tscn" id="10_ffve5"]
 [ext_resource type="Shader" path="res://shaders/mirror.gdshader" id="12_dq8vv"]
-[ext_resource type="Script" path="res://scripts/MirrorCamera.gd" id="12_f85so"]
+[ext_resource type="PackedScene" uid="uid://dsdkgssltq1nq" path="res://sub_viewport.tscn" id="13_2qs8x"]
 
 [sub_resource type="Resource" id="Resource_ykoex"]
 resource_name = "Bust"
@@ -807,20 +807,18 @@ size = Vector3(15.5789, 0.498901, 19.1924)
 [sub_resource type="QuadMesh" id="QuadMesh_3c1f0"]
 size = Vector2(3, 3)
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_01pur"]
-viewport_path = NodePath("Mirror/SubViewport")
+[sub_resource type="ViewportTexture" id="ViewportTexture_kctbd"]
+viewport_path = NodePath("Mirror/LeftSubViewPort")
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_dma4m"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_6cn32"]
+viewport_path = NodePath("Mirror/RightSubViewPort")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_xvk3h"]
 resource_local_to_scene = true
 render_priority = 0
 shader = ExtResource("12_dq8vv")
-shader_parameter/tex = SubResource("ViewportTexture_01pur")
-
-[sub_resource type="PrismMesh" id="PrismMesh_56qj7"]
-
-[sub_resource type="SphereMesh" id="SphereMesh_3gby7"]
-radius = 0.2
-height = 0.4
+shader_parameter/left_eye = SubResource("ViewportTexture_kctbd")
+shader_parameter/right_eye = SubResource("ViewportTexture_6cn32")
 
 [sub_resource type="SphereMesh" id="SphereMesh_xy2ts"]
 radius = 0.1
@@ -873,6 +871,12 @@ avatar = NodePath("../../6493143135142452442")
 
 [node name="VRCommonShaderCache" parent="XROrigin3D/XRCamera3D" instance=ExtResource("5_u2yjh")]
 
+[node name="LeftEye" type="Marker3D" parent="XROrigin3D/XRCamera3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.032, 0, 0)
+
+[node name="RightEye" type="Marker3D" parent="XROrigin3D/XRCamera3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.032, 0, 0)
+
 [node name="LeftController" type="XRController3D" parent="XROrigin3D"]
 transform = Transform3D(-0.478419, 0.127286, 0.868858, -0.877236, -0.113966, -0.466336, 0.0396625, -0.985297, 0.166183, -0.330126, 1.21712, -0.222128)
 tracker = &"left_hand"
@@ -915,29 +919,24 @@ shape = SubResource("BoxShape3D_tjcrb")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.03924, -1.39218)
 mesh = SubResource("QuadMesh_3c1f0")
 skeleton = NodePath("../StartXR")
-surface_material_override/0 = SubResource("ShaderMaterial_dma4m")
-
-[node name="SubViewport" type="SubViewport" parent="Mirror"]
-size = Vector2i(1920, 1080)
-
-[node name="MirrorCamera" type="Camera3D" parent="Mirror/SubViewport" node_paths=PackedStringArray("xr_camera")]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, -3)
-fov = 70.0
-script = ExtResource("12_f85so")
-xr_camera = NodePath("../../../XROrigin3D/XRCamera3D")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Mirror/SubViewport/MirrorCamera"]
-visible = false
-mesh = SubResource("PrismMesh_56qj7")
-
-[node name="MeshInstance3D2" type="MeshInstance3D" parent="Mirror/SubViewport/MirrorCamera"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.46964e-08, 0.508553, 0.436859)
-visible = false
-mesh = SubResource("SphereMesh_3gby7")
+surface_material_override/0 = SubResource("ShaderMaterial_xvk3h")
 
 [node name="Bola" type="MeshInstance3D" parent="Mirror"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.48086, 1.51646, 0)
 mesh = SubResource("SphereMesh_xy2ts")
+
+[node name="LeftSubViewPort" parent="Mirror" instance=ExtResource("13_2qs8x")]
+
+[node name="MirrorCamera" parent="Mirror/LeftSubViewPort" index="0" node_paths=PackedStringArray("xr_camera")]
+fov = 89.0
+xr_camera = NodePath("../../../XROrigin3D/XRCamera3D")
+
+[node name="RightSubViewPort" parent="Mirror" instance=ExtResource("13_2qs8x")]
+
+[node name="MirrorCamera" parent="Mirror/RightSubViewPort" index="0" node_paths=PackedStringArray("xr_camera")]
+fov = 89.0
+xr_camera = NodePath("../../../XROrigin3D/XRCamera3D")
+eye = 1
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.798091, 0, -4.69956)
@@ -945,3 +944,5 @@ mesh = SubResource("BoxMesh_s4rvd")
 
 [editable path="6493143135142452442"]
 [editable path="XROrigin3D/PlayerBody"]
+[editable path="Mirror/LeftSubViewPort"]
+[editable path="Mirror/RightSubViewPort"]

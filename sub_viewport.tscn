@@ -1,0 +1,26 @@
+[gd_scene load_steps=4 format=3 uid="uid://dsdkgssltq1nq"]
+
+[ext_resource type="Script" path="res://scripts/MirrorCamera.gd" id="1_xjo3j"]
+
+[sub_resource type="PrismMesh" id="PrismMesh_56qj7"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_3gby7"]
+radius = 0.2
+height = 0.4
+
+[node name="SubViewport" type="SubViewport"]
+size = Vector2i(1920, 1832)
+
+[node name="MirrorCamera" type="Camera3D" parent="."]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, -3)
+fov = 70.0
+script = ExtResource("1_xjo3j")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="MirrorCamera"]
+visible = false
+mesh = SubResource("PrismMesh_56qj7")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="MirrorCamera"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.46964e-08, 0.508553, 0.436859)
+visible = false
+mesh = SubResource("SphereMesh_3gby7")
