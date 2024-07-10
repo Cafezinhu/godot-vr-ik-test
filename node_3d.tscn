@@ -912,7 +912,7 @@ shape = SubResource("BoxShape3D_tjcrb")
 [node name="StartXR" parent="." instance=ExtResource("10_ffve5")]
 
 [node name="Mirror" type="MeshInstance3D" parent="."]
-transform = Transform3D(-0.300706, 0, 0.953717, 0, 1, 0, -0.953717, 0, -0.300706, 0, 0, -1.39218)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.03924, -1.39218)
 mesh = SubResource("QuadMesh_3c1f0")
 skeleton = NodePath("../StartXR")
 surface_material_override/0 = SubResource("ShaderMaterial_dma4m")
@@ -927,10 +927,12 @@ script = ExtResource("12_f85so")
 xr_camera = NodePath("../../../XROrigin3D/XRCamera3D")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Mirror/SubViewport/MirrorCamera"]
+visible = false
 mesh = SubResource("PrismMesh_56qj7")
 
 [node name="MeshInstance3D2" type="MeshInstance3D" parent="Mirror/SubViewport/MirrorCamera"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.46964e-08, 0.508553, 0.436859)
+visible = false
 mesh = SubResource("SphereMesh_3gby7")
 
 [node name="Bola" type="MeshInstance3D" parent="Mirror"]
