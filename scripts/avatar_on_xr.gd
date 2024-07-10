@@ -29,7 +29,7 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	avatar.rotation_degrees.y = rotation_degrees.y + 180
+	avatar.global_rotation_degrees.y = global_rotation_degrees.y + 180
 	avatar.global_position = Vector3(global_position.x, global_position.y - look_offset_y, global_position.z)
 	avatar_skeleton.set_bone_pose_scale(neck_id, Vector3.ZERO)
 	
