@@ -1,10 +1,11 @@
+@tool
 extends Camera3D
 
 @export var xr_camera: XRCamera3D
 var mirror: MeshInstance3D
 enum Eye {Left, Right}
 @export var eye: Eye
-var eye_position: Marker3D
+var eye_position: Node3D
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	mirror = get_parent().get_parent()
@@ -12,7 +13,18 @@ func _ready():
 		eye_position = xr_camera.get_node("LeftEye")
 	else:
 		eye_position = xr_camera.get_node("RightEye")
-#func p
+	if Engine.is_editor_hint():
+		eye_position = EditorInterface.get_editor_viewport_3d(0).get_camera_3d()
+	set_resolution()
+
+func set_resolution():
+	var openxr_interface: OpenXRInterface = XRServer.find_interface("OpenXR")
+	if not openxr_interface or not openxr_interface.is_initialized():
+		var subviewport: SubViewport = get_parent()
+		subviewport.size = get_tree().root.get_viewport().size
+		print(get_tree().root.get_viewport().size)
+		print(subviewport.size)
+	
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -37,5 +49,4 @@ func _process(delta):
 	var z = po.z + n.z * t * 2
 	
 	global_position = Vector3(x, y, z)
-	#print(global_position)
 	near = t
